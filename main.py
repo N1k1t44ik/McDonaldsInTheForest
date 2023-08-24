@@ -12,7 +12,7 @@ class Game:
 		self.scenes = []
 		self.on_init()
 
-	def newButton(self, RES, text, fontSize, COLOR, func=lambda:None):
+	def newButton(self, RES, text, fontSize, COLOR, func=lambda: None):
 		multiplier = len(self.buttons)
 		H_POS = RES[1]
 		H_RES = RES[3]
@@ -64,21 +64,22 @@ class Game:
 		Instance(self)
 
 	def build(self):
-		# Clear buttons
+		# Clear scene
 		self.clean()
 		# Build local scene
-		lScene = Scene('','')
+		lScene = Scene
 		for scene in self.scenes:
 			if scene.name == self.localScene:
 				lScene = scene
 		self.placer.bg(lScene.bg)
+		# build text fields on scene
 		for field in lScene.fields:
 			self.placer.place(field)
+		# build buttons on scene
 		for button in lScene.buttons:
 			if not button.type == 'empty':
-				pos, text, fontsize, color, func = button.unpack()
-				#self.buttons.append(self.newButton(pos, text, fontsize, color, func))
-				self.newButton(pos, text, fontsize, color, func)
+				pos, text, fontSize, color, func = button.unpack()
+				self.newButton(pos, text, fontSize, color, func)
 			else:
 				self.buttons.append(self.emptyButton())
 
