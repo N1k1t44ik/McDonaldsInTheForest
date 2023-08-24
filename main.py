@@ -51,6 +51,9 @@ class Game:
 		self.localScene = self.scenes[nextIndex].name
 		self.build()
 
+	def wait(self, seconds): time.sleep(seconds)
+	def script(self, func=lambda: None): func()
+
 	def changeScene(self, name):
 		targetScene = None
 		for scene in self.scenes:
@@ -59,8 +62,18 @@ class Game:
 		self.localScene = targetScene.name
 		self.build()
 
+	def monologue(self, text, sleep=1):
+		self.changeScene('wait')
+		rect = (DEFAULT_BUTTON_RES[0], DEFAULT_BUTTON_RES[1] - DEFAULT_BUTTON_MINUS_HEIGHT, DEFAULT_BUTTON_RES[2], DEFAULT_BUTTON_RES[3])
+		self.wait(sleep)
+		Text = Element(rect, (255, 255, 255), is_text=True, bold=True, text=text)
+		self.placer.place(Text)
+
 	def on_init(self):
 		# Create a scenes instances
+		Wait = Scene('assets/wait.jpg', 'wait')
+		Wait.buttons.append(pack(DEFAULT_BUTTON_RES, 'Меню', DEFAULT_BUTTON_FONTSIZE, DEFAULT_BUTTON_COLOR, lambda: self.changeScene('Menu')))
+		self.addScene(Wait)
 		Instance(self)
 
 	def build(self):
